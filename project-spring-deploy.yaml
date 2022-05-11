@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-app
+  labels:
+    app: spring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring
+  template:
+    metadata:
+      labels:
+        app: spring
+    spec:
+      containers:
+      - name: project-app
+        image: dscharan2001/spring-app
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_SERVER
+          value: "project-postgres"
+        - name: POSTGRES_DB
+          value: "PROJECTDB"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        ports:
+          - name: http
+            containerPort: 8235 
+        resources:
+          limits:
+            cpu: 0.2
+            memory: "200Mi"
