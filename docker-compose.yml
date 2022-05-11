@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  project-postgres:
+    image: "postgres:9.6-alpine"
+    container_name: project-postgres
+    volumes:
+      - project-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=PROJECTDB
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+  spring-app:
+    image: dscharan2001/spring-app
+    container_name: spring-app
+    environment:
+      - DB_SERVER=project-postgres
+      - POSTGRES_DB=PROJECTDB
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 8235:8235
+    links:
+      - project-postgres
+volumes:
+  project-data:
